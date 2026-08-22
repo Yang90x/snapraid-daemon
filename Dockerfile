@@ -10,7 +10,7 @@ ARG SNAPRAID_DAEMON_VERSION=1.14
 #RUN sed -i "s#https\?://dl-cdn.alpinelinux.org/alpine#${ALPINE_REPO}#g" /etc/apk/repositories
 
 #install neded tools for compilation
-RUN apk --update add make g++ wget zip
+RUN apk --update add make g++ wget zip util-linux-dev
 RUN wget ${GIT_PROXY}https://github.com/amadvance/snapraid/releases/download/v${SNAPRAID_CLI_VERSION}/snapraid-${SNAPRAID_CLI_VERSION}.tar.gz && \
     tar xf snapraid-${SNAPRAID_CLI_VERSION}.tar.gz
 RUN cd snapraid-${SNAPRAID_CLI_VERSION} && \
@@ -31,7 +31,7 @@ FROM alpine:latest
 #RUN sed -i "s#https\?://dl-cdn.alpinelinux.org/alpine#${ALPINE_REPO}#g" /etc/apk/repositories && \
 #    apk add --no-cache smartmontools
 
-RUN apk add --no-cache smartmontools
+RUN apk add --no-cache smartmontools libblkid
 
 COPY --from=builder /usr/local/bin/snapraid /usr/local/bin/snapraid
 COPY --from=builder /usr/local/bin/snapraidd /usr/local/bin/snapraidd
